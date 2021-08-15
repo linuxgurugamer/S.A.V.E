@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading;
+//using System.Threading;
 
 namespace Nereid
 {
@@ -15,11 +15,12 @@ namespace Nereid
 
          public T Dequeue()
          {
-            lock (locker)
+            //lock (locker)
             {
                while (queue.Count == 0)
                {
-                  Monitor.Wait(locker);
+                        //Monitor.Wait(locker);
+                        return default(T);
                }
             }
             return queue.Dequeue();
@@ -27,10 +28,10 @@ namespace Nereid
 
          public void Enqueue(T item)
          {
-            lock (locker)
+            //lock (locker)
             {
                queue.Enqueue(item);
-               Monitor.Pulse(locker);
+               //Monitor.Pulse(locker);
             }
          }
 

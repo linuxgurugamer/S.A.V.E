@@ -5,15 +5,15 @@ namespace Nereid
 {
    namespace SAVE
    {
-      [KSPAddon(KSPAddon.Startup.Instantly, true)]
+      [KSPAddon(KSPAddon.Startup.MainMenu, true)]
       public class SAVE : MonoBehaviour
       {
          public static readonly Configuration configuration = new Configuration();
 
-         public static readonly BackupManager manager = new BackupManager();
+            public static BackupManager manager;
 
          static SAVE()
-         {
+         {            
          }
 
          private MainMenuGui gui;
@@ -52,6 +52,7 @@ namespace Nereid
             Log.Info("registering events");
             GameEvents.onGameStateSaved.Add(manager.CallbackGameSaved);
             GameEvents.onGameSceneLoadRequested.Add(this.CallbackGameSceneLoadRequested);
+            GameEvents.onGameStateSave.Add(manager.CallbackGameSave);
          }
 
          private void CallbackGameSceneLoadRequested(GameScenes scene)

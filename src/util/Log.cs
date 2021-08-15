@@ -39,11 +39,25 @@ namespace Nereid
             return level <= Log.level;
          }
 
+         private static void LogOnMainThread(String msg)
+         {
+#if false
+                if(SAVE.configuration.asynchronous)
+            {
+               MainThreadDispatcher.RunOnMainThread( () => { Debug.Log(msg); } );
+            }
+            else
+#endif
+            {
+               Debug.Log(msg);
+            }
+         }
+
          public static void Trace(String msg)
          {
             if (IsLogable(LEVEL.TRACE))
             {
-               Debug.Log(PREFIX + msg);
+               LogOnMainThread(PREFIX + msg);
             }
          }
 
@@ -51,7 +65,7 @@ namespace Nereid
          {
             if (IsLogable(LEVEL.DETAIL))
             {
-               Debug.Log(PREFIX + msg);
+               LogOnMainThread(PREFIX + msg);
             }
          }
 
@@ -60,7 +74,7 @@ namespace Nereid
          {
             if (IsLogable(LEVEL.INFO))
             {
-               Debug.Log(PREFIX + msg);
+               LogOnMainThread(PREFIX + msg);
             }
          }
 
@@ -69,7 +83,16 @@ namespace Nereid
          {
             //if (IsLogable(LEVEL.INFO))
             {
-               Debug.LogWarning(PREFIX+"TEST:" + msg);
+#if false
+                    if (SAVE.configuration.asynchronous)
+               {
+                  MainThreadDispatcher.RunOnMainThread(() => { Debug.LogWarning(PREFIX + "TEST:" + msg); });
+               }
+               else
+#endif
+               {
+                  Debug.LogWarning(PREFIX + "TEST:" + msg);
+               }
             }
          }
 
@@ -77,7 +100,16 @@ namespace Nereid
          {
             if (IsLogable(LEVEL.WARNING))
             {
-               Debug.LogWarning(PREFIX + msg);
+#if false
+                    if (SAVE.configuration.asynchronous)
+               {
+                  MainThreadDispatcher.RunOnMainThread(() => { Debug.LogWarning(PREFIX + msg); });
+               }
+               else
+#endif
+               {
+                  Debug.LogWarning(PREFIX + msg); ;
+               }               
             }
          }
 
@@ -85,13 +117,35 @@ namespace Nereid
          {
             if (IsLogable(LEVEL.ERROR))
             {
-               Debug.LogError(PREFIX + msg);
+#if false
+                    if (SAVE.configuration.asynchronous)
+               {
+                  MainThreadDispatcher.RunOnMainThread(() => { Debug.LogError(PREFIX + msg); });
+               }
+               else
+#endif
+               {
+                  Debug.LogError(PREFIX + msg);
+               }
             }
          }
 
          public static void Exception(Exception e)
          {
-            Log.Error("exception caught: " + e.GetType() + ": " + e.Message);
+            String msg = PREFIX + "exception caught: " + e.GetType() + ": " + e.Message;
+            if (IsLogable(LEVEL.ERROR))
+            {
+#if false
+                    if (SAVE.configuration.asynchronous)
+               {
+                  MainThreadDispatcher.RunOnMainThread(() => { Debug.LogError(msg); });
+               }
+               else
+#endif
+               {
+                  Log.Error(msg);
+               }
+            }
          }
 
       }

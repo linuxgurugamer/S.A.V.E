@@ -66,16 +66,22 @@ namespace Nereid
                if (visible)
                {
                   this.bounds = GUILayout.Window(this.GetInstanceID(), this.bounds, this.Window, TITLE, HighLogic.Skin.window);
-                        if (S.A.V.E.src.util.io.ConfigNodeIO.fixedWindowUpperRight)
-                            bounds.x = Screen.width - bounds.width;
-                        if (S.A.V.E.src.util.io.ConfigNodeIO.fixedWindowUpperLeft)
-                            bounds.x = 0;
 
-                    }
-                }
+                        if (SAVE.configuration.windowPosition == Configuration.WindowPos.UpperRight)
+                        {
+                     bounds.x = Screen.width - bounds.width;
+                            bounds.y = 0;
+                        }
+                        if (SAVE.configuration.windowPosition == Configuration.WindowPos.UpperLeft)
+                        {
+                     bounds.x = 0;
+                            bounds.y = 0;
+                        }
+               }
+            }
             catch (Exception e)
             {
-               Log.Error("exception: "+e.Message);
+                    Log.Error("OnGUI exception: " + e.Message);
             }
          }
 
@@ -85,20 +91,19 @@ namespace Nereid
 
             DISPLAY lastDisplay = display;
 
-            BackupManager manager = SAVE.manager;
 
             try
             {
                GUILayout.BeginVertical();
                GUILayout.BeginHorizontal();
-               GUI.enabled = manager.RestoreCompleted() && manager.BackupsCompleted() && manager.NumberOfBackupSets() > 0;
+               GUI.enabled = SAVE.manager.RestoreCompleted() && SAVE.manager.BackupsCompleted() && SAVE.manager.NumberOfBackupSets() > 0;
                if (GUILayout.Button("Backup All", GUI.skin.button))
                {
                   display = DISPLAY.BACKUP;
                   // don't start another backup if there is still a backup running
                   if (SAVE.manager.BackupsCompleted())
                   {
-                     backupCount = manager.BackupAll();
+                     backupCount = SAVE.manager.BackupAll();
                      backupCloseTime = DateTime.Now.AddSeconds(BACKUP_DISPLAY_REMAINS_OPEN_TIME);
                   }
                   else
@@ -108,8 +113,8 @@ namespace Nereid
                }
                GUI.enabled = true;
                // Restore
-               GUI.enabled = manager.NumberOfBackupSets() > 0;
-               if(DrawDisplayToggle("Restore", DISPLAY.RESTORE) && !SAVE.manager.RestoreCompleted())
+               GUI.enabled = SAVE.manager.NumberOfBackupSets() > 0;
+               if (DrawDisplayToggle("Restore", DISPLAY.RESTORE) && !SAVE.manager.RestoreCompleted() )
                {
                   display = DISPLAY.RESTORING;
                }
@@ -161,7 +166,7 @@ namespace Nereid
                }
                GUILayout.EndVertical();
 
-               if(display==DISPLAY.BACKUP && backupCloseTime < DateTime.Now && manager.Queuedbackups()==0)
+               if(display==DISPLAY.BACKUP && backupCloseTime < DateTime.Now && SAVE.manager.Queuedbackups()==0)
                {
                   display = DISPLAY.HIDDEN;
                }
@@ -169,7 +174,7 @@ namespace Nereid
             }
             catch (Exception e)
             {
-               Log.Error("exception: " + e.Message);
+                    Log.Error("Window exception: " + e.Message);
             }
 
             // resize GUI if display changes
@@ -177,8 +182,8 @@ namespace Nereid
             {
                this.bounds.height = 0;
             }
-                if (S.A.V.E.src.util.io.ConfigNodeIO.fixedWindowFloating)
-                    GUI.DragWindow();
+                if (SAVE.configuration.windowPosition == Configuration.WindowPos.Floating)
+                        GUI.DragWindow();
          }
 
          private bool DrawDisplayToggle(String text, DISPLAY display)
@@ -406,7 +411,7 @@ namespace Nereid
             GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
             GUI.enabled = cloneFromBackupEnabled;
-            cloneBackups = GUILayout.Toggle(cloneBackups, "Include backups");
+            cloneBackups = GUILayout.Toggle(cloneBackups, "Including backups");
             GUI.enabled = true;
             GUILayout.BeginHorizontal();
             GUILayout.FlexibleSpace();
@@ -547,12 +552,22 @@ namespace Nereid
             // disabled
             SAVE.configuration.disabled = GUILayout.Toggle(SAVE.configuration.disabled, " Backups temporary disabled");
             // async
-            config.asynchronous = GUILayout.Toggle(config.asynchronous, " Asynchronous backup/restore");
+            //config.asynchronous = GUILayout.Toggle(config.asynchronous, " Asynchronous backup/restore");
             // recurse
             config.recurseBackup = GUILayout.Toggle(config.recurseBackup, " Recurse subfolders");
             // compress
             // not working right now
             config.compressBackups = GUILayout.Toggle(config.compressBackups, " Compress backups");
+            
+            GUILayout.BeginHorizontal();
+            GUILayout.Space(15);
+            GUILayout.Label("Window Position:");
+
+            WindowPositionToggle(Configuration.WindowPos.UpperRight, "Upper Right");
+            WindowPositionToggle(Configuration.WindowPos.UpperLeft, "Upper Left");
+            WindowPositionToggle(Configuration.WindowPos.Floating, "Floating");
+            //GUILayout.EndVertical();
+            GUILayout.EndHorizontal();
             // interval
             GUILayout.Label("Backup interval: ");
             BackupIntervalToggle(Configuration.BACKUP_INTERVAL.ON_QUIT, "On quit");
@@ -590,6 +605,14 @@ namespace Nereid
             GUILayout.Space(CONFIG_TEXTFIELD_RIGHT_MARGIN);
             config.maxNumberOfBackups = ParseInt(sMaxNumberOfbackups);
             GUILayout.EndHorizontal();
+            GUILayout.BeginHorizontal();
+            GUILayout.FlexibleSpace();
+            if (GUILayout.Button("Save Config", GUI.skin.button))
+            {
+               config.Save();
+               display = DISPLAY.HIDDEN;
+            }
+            GUILayout.EndHorizontal();
          }
 
          private int ParseInt(String s)
@@ -612,6 +635,13 @@ namespace Nereid
                SAVE.configuration.backupInterval = interval;
             }
          }
+            private void WindowPositionToggle(Configuration.WindowPos winPos, string text)
+            {
+                if (GUILayout.Toggle(SAVE.configuration.windowPosition == winPos, " " + text))
+                {
+                    SAVE.configuration.windowPosition = winPos;
+                }
+            }
 
          private void LogLevelButton(Log.LEVEL level, String text)
          {

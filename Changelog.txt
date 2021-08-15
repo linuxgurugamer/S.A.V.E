@@ -1,0 +1,8 @@
+Changelog
+
+1.11.0
+	Adoption by Linuxgurugamer
+	Added variable positioning of the window
+	Converted from threads to CoRoutines
+	Fixed bug where trying to clone after doing a backup was returning a sharing violation (backup.ok wasn't being closed)
+	Removed asyncronous option
