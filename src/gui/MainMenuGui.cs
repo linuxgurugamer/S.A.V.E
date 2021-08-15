@@ -91,20 +91,19 @@ namespace Nereid
 
             DISPLAY lastDisplay = display;
 
-            BackupManager manager = SAVE.manager;
 
             try
             {
                GUILayout.BeginVertical();
                GUILayout.BeginHorizontal();
-               GUI.enabled = manager.RestoreCompleted() && manager.BackupsCompleted() && manager.NumberOfBackupSets() > 0;
+               GUI.enabled = SAVE.manager.RestoreCompleted() && SAVE.manager.BackupsCompleted() && SAVE.manager.NumberOfBackupSets() > 0;
                if (GUILayout.Button("Backup All", GUI.skin.button))
                {
                   display = DISPLAY.BACKUP;
                   // don't start another backup if there is still a backup running
                   if (SAVE.manager.BackupsCompleted())
                   {
-                     backupCount = manager.BackupAll();
+                     backupCount = SAVE.manager.BackupAll();
                      backupCloseTime = DateTime.Now.AddSeconds(BACKUP_DISPLAY_REMAINS_OPEN_TIME);
                   }
                   else
@@ -114,7 +113,7 @@ namespace Nereid
                }
                GUI.enabled = true;
                // Restore
-               GUI.enabled = manager.NumberOfBackupSets() > 0;
+               GUI.enabled = SAVE.manager.NumberOfBackupSets() > 0;
                if (DrawDisplayToggle("Restore", DISPLAY.RESTORE) && !SAVE.manager.RestoreCompleted() )
                {
                   display = DISPLAY.RESTORING;
@@ -167,7 +166,7 @@ namespace Nereid
                }
                GUILayout.EndVertical();
 
-               if(display==DISPLAY.BACKUP && backupCloseTime < DateTime.Now && manager.Queuedbackups()==0)
+               if(display==DISPLAY.BACKUP && backupCloseTime < DateTime.Now && SAVE.manager.Queuedbackups()==0)
                {
                   display = DISPLAY.HIDDEN;
                }
@@ -553,7 +552,7 @@ namespace Nereid
             // disabled
             SAVE.configuration.disabled = GUILayout.Toggle(SAVE.configuration.disabled, " Backups temporary disabled");
             // async
-            config.asynchronous = GUILayout.Toggle(config.asynchronous, " Asynchronous backup/restore");
+            //config.asynchronous = GUILayout.Toggle(config.asynchronous, " Asynchronous backup/restore");
             // recurse
             config.recurseBackup = GUILayout.Toggle(config.recurseBackup, " Recurse subfolders");
             // compress

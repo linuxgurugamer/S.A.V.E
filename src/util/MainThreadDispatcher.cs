@@ -1,8 +1,9 @@
-﻿using System;
+﻿#if false
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+//using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Nereid
@@ -31,7 +32,7 @@ namespace Nereid
 
          public static void RunOnMainThread(Action action)
          {
-            lock (Backlog)
+            //lock (Backlog)
             {
                Backlog.Add(action);
                IsQueued = true;
@@ -42,7 +43,7 @@ namespace Nereid
          {
             if (IsQueued)
             {
-               lock (Backlog)
+              // lock (Backlog)
                {
                   var tmp = Actions;
                   Actions = Backlog;
@@ -60,3 +61,4 @@ namespace Nereid
       }
    }
 }
+#endif

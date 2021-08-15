@@ -5,12 +5,12 @@ namespace Nereid
 {
    namespace SAVE
    {
-      [KSPAddon(KSPAddon.Startup.Instantly, true)]
+      [KSPAddon(KSPAddon.Startup.MainMenu, true)]
       public class SAVE : MonoBehaviour
       {
          public static readonly Configuration configuration = new Configuration();
 
-         public static readonly BackupManager manager = new BackupManager();
+            public static BackupManager manager;
 
          static SAVE()
          {            

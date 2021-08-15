@@ -41,11 +41,13 @@ namespace Nereid
 
          private static void LogOnMainThread(String msg)
          {
-            if(SAVE.configuration.asynchronous)
+#if false
+                if(SAVE.configuration.asynchronous)
             {
                MainThreadDispatcher.RunOnMainThread( () => { Debug.Log(msg); } );
             }
             else
+#endif
             {
                Debug.Log(msg);
             }
@@ -81,11 +83,13 @@ namespace Nereid
          {
             //if (IsLogable(LEVEL.INFO))
             {
-               if (SAVE.configuration.asynchronous)
+#if false
+                    if (SAVE.configuration.asynchronous)
                {
                   MainThreadDispatcher.RunOnMainThread(() => { Debug.LogWarning(PREFIX + "TEST:" + msg); });
                }
                else
+#endif
                {
                   Debug.LogWarning(PREFIX + "TEST:" + msg);
                }
@@ -96,11 +100,13 @@ namespace Nereid
          {
             if (IsLogable(LEVEL.WARNING))
             {
-               if (SAVE.configuration.asynchronous)
+#if false
+                    if (SAVE.configuration.asynchronous)
                {
                   MainThreadDispatcher.RunOnMainThread(() => { Debug.LogWarning(PREFIX + msg); });
                }
                else
+#endif
                {
                   Debug.LogWarning(PREFIX + msg); ;
                }               
@@ -111,11 +117,13 @@ namespace Nereid
          {
             if (IsLogable(LEVEL.ERROR))
             {
-               if (SAVE.configuration.asynchronous)
+#if false
+                    if (SAVE.configuration.asynchronous)
                {
                   MainThreadDispatcher.RunOnMainThread(() => { Debug.LogError(PREFIX + msg); });
                }
                else
+#endif
                {
                   Debug.LogError(PREFIX + msg);
                }
@@ -127,11 +135,13 @@ namespace Nereid
             String msg = PREFIX + "exception caught: " + e.GetType() + ": " + e.Message;
             if (IsLogable(LEVEL.ERROR))
             {
-               if (SAVE.configuration.asynchronous)
+#if false
+                    if (SAVE.configuration.asynchronous)
                {
                   MainThreadDispatcher.RunOnMainThread(() => { Debug.LogError(msg); });
                }
                else
+#endif
                {
                   Log.Error(msg);
                }

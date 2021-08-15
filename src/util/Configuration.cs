@@ -26,7 +26,7 @@ namespace Nereid
          public int minNumberOfBackups { get; set; }
          public int maxNumberOfBackups { get; set; }
          public bool recurseBackup { get; set; }
-         public bool asynchronous { get; set; }
+         //public bool asynchronous { get; set; }
          public int customBackupInterval { get; set; }
          public bool compressBackups { get; set; }
          public bool disabled { get; set; }
@@ -46,7 +46,7 @@ namespace Nereid
             recurseBackup = true;
             customBackupInterval = 1;
             backupBeforeRestore = true;
-            asynchronous = false;
+//            asynchronous = false;
             compressBackups = false;
             windowPosition = WindowPos.UpperRight;
             disabled = false;
