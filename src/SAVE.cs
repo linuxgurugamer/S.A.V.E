@@ -32,7 +32,7 @@ namespace Nereid
 
          public void Start()
          {
-            Log.SetLevel(Log.LEVEL.INFO);
+            //Log.SetLevel(Log.LEVEL.INFO);
             Log.Info("start");
             configuration.Load();
             S.A.V.E.src.util.io.ConfigNodeIO.LoadData();
