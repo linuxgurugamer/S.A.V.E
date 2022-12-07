@@ -18,7 +18,7 @@ namespace Nereid
         {
             private const String COMPRESSED_SUFFIX = ".save.compressed";
 
-            private static readonly String ROOT_PATH = KSPUtil.ApplicationRootPath;
+            private static String ROOT_PATH { get { return KSPUtil.ApplicationRootPath; } }
             private static readonly String CONFIG_BASE_FOLDER = ROOT_PATH + "/GameData/";
 
             public static bool InsideApplicationRootPath(String path)

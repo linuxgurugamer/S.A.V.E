@@ -8,7 +8,8 @@ namespace S.A.V.E.src.util.io
     class ConfigNodeIO
     {
 
-        static string PLUGINDATA = "GameData/Nereid/S.A.V.E/PluginData/Settings.cfg";
+        const string PluginData = "GameData/Nereid/S.A.V.E/PluginData/Settings.cfg";
+        static string PLUGINDATA {  get { return KSPUtil.ApplicationRootPath + PluginData; } }
         const string DATANODE = "S.A.V.E";
         const string EXCLUDE = "Exclude";
 
@@ -26,9 +27,9 @@ namespace S.A.V.E.src.util.io
 
         static public void LoadData()
         {
-            if (File.Exists(KSPUtil.ApplicationRootPath + PLUGINDATA))
+            if (File.Exists(PLUGINDATA))
             {
-                ConfigNode data = ConfigNode.Load(KSPUtil.ApplicationRootPath + PLUGINDATA);
+                ConfigNode data = ConfigNode.Load( PLUGINDATA);
                 if (data != null)
                 {
                     ConfigNode dataNode = data.GetNode(DATANODE);

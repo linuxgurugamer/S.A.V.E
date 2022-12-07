@@ -1,5 +1,8 @@
 Changelog
 
+1.11.0.3
+	Fixed path for loading files (broken by new launcher)
+
 1.11.0.2
 	Removed some log spam
 
