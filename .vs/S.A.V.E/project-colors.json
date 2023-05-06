@@ -1,0 +1,16 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "16b338a6-13b2-4bec-8e3c-ef8d09f94103": {
+      "ProjectGuid": "16b338a6-13b2-4bec-8e3c-ef8d09f94103",
+      "DisplayName": "S.A.V.E-LGG",
+      "ColorIndex": 0
+    },
+    "0354179f-ed63-428c-8198-6fb6d2b9a64b": {
+      "ProjectGuid": "0354179f-ed63-428c-8198-6fb6d2b9a64b",
+      "DisplayName": "Solution Items",
+      "ColorIndex": 1
+    }
+  },
+  "NextColorIndex": 2
+}

@@ -37,7 +37,7 @@ namespace Nereid
 
          public Configuration()
          {
-            logLevel = Log.LEVEL.INFO;
+            logLevel = Log.LEVEL.ERROR;
             backupInterval = BACKUP_INTERVAL.ONCE_PER_HOUR;
             backupPath = "./backup";
             daysToKeepBackups = 14;
